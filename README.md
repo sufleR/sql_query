@@ -78,9 +78,10 @@ WHERE email = 'e@mail.dev'
 
 ### Configuration
 
-If you don't like default path to you queries you can configure it in initializer.
+If you don't like default path to your queries you can configure it in initializer.
 
 ```ruby
+# config/initializers/sql_query.rb
 SqlQuery.configure do |config|
   config.path = '/app/sql_templates'
 end
