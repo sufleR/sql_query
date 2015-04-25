@@ -72,7 +72,8 @@ WHERE email = 'e@mail.dev'
 
 - **explain** - runs explain for SQL from template
 - **sql** - returns SQL string
-- **pretty_sql** - return SQL string prettier to read in console
+- **pretty_sql** - returns SQL string prettier to read in console
+- prepared_for_logs - returns sql string without new lines and multiple whitespaces.
 
 ## Contributing
 
