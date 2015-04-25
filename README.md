@@ -76,6 +76,16 @@ WHERE email = 'e@mail.dev'
 - **pretty_sql** - returns SQL string prettier to read in console
 - **prepared_for_logs** - returns sql string without new lines and multiple whitespaces.
 
+### Configuration
+
+If you don't like default path to you queries you can configure it in initializer.
+
+```ruby
+SqlQuery.configure do |config|
+  config.path = '/app/sql_templates'
+end
+```
+
 ## Contributing
 
 1. Fork it ( https://github.com/[my-github-username]/sql_query/fork )
