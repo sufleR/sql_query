@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
     It makes working with pure SQL easier with syntax highlighting.
     Let's you clean your Ruby code from SQL strings.
   }
-  spec.homepage      = ""
+  spec.homepage      = "https://github.com/sufleR/sql_query"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")
