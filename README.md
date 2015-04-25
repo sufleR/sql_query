@@ -35,10 +35,11 @@ SELECT *
 FROM players
 WHERE email = <%= quote @email %>
 ```
+quote is an alias to `ActiveRecord.connection.quote` method. you can use it to sanitize your variables for SQL.
 
 You can use SQL like this:
 
-```shell
+```ruby
 > query = SqlQuery.new(sql_name: :get_player_by_email, email: 'e@mail.dev')
 
 > query.execute
