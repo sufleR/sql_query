@@ -35,7 +35,7 @@ SELECT *
 FROM players
 WHERE email = <%= quote @email %>
 ```
-quote is an alias to `ActiveRecord.connection.quote` method. you can use it to sanitize your variables for SQL.
+quote is an alias to `ActiveRecord.connection.quote` method. You can use it to sanitize your variables for SQL.
 
 You can use SQL like this:
 
