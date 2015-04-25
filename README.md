@@ -9,6 +9,7 @@
 Ruby gem to load SQL queries from `.sql.erb` templates using ERB.
 
 It makes working with pure SQL easier with syntax highlighting.
+
 Let's you clean your Ruby code from SQL strings.
 
 ## Installation
@@ -35,7 +36,7 @@ SELECT *
 FROM players
 WHERE email = <%= quote @email %>
 ```
-quote is an alias to `ActiveRecord.connection.quote` method. You can use it to sanitize your variables for SQL.
+`quote` method is an alias to `ActiveRecord.connection.quote` method. You can use it to sanitize your variables for SQL.
 
 You can use SQL like this:
 
@@ -70,7 +71,6 @@ WHERE email = 'e@mail.dev'
 ### Methods
 
 - **execute** - executes query and returns result data.
-
 - **explain** - runs explain for SQL from template
 - **sql** - returns SQL string
 - **pretty_sql** - returns SQL string prettier to read in console
