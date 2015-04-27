@@ -6,11 +6,13 @@
 
 # SqlQuery
 
-Ruby gem to load SQL queries from `.sql.erb` templates using ERB.
+Ruby gem to load SQL queries from templates using ERB.
 
 It makes working with pure SQL easier with syntax highlighting.
 
 Let's you clean your Ruby code from SQL strings.
+
+Supported extensions: `.sql.erb` or `.erb.sql`
 
 ## Installation
 
