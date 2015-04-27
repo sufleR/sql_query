@@ -19,7 +19,7 @@ class SqlQuery
   end
 
   def sql
-    @sql ||= ERB.new(File.read(path)).result(binding)
+    @sql ||= ERB.new(File.read(file_path)).result(binding)
   end
 
   def pretty_sql
@@ -70,10 +70,21 @@ class SqlQuery
     end
   end
 
+  def file_path
+    files = Dir.glob(path)
+    if files.size == 0
+      raise "File not found with name: #{ @sql_name } in #{self.class.config.path}#{ @file_path }"
+    elsif files.size > 1
+      raise "More than one file found: #{ files.join(', ')}"
+    else
+      files.first
+    end
+  end
+
   def path
     root = defined?(Rails) ? Rails.root.to_s : Dir.pwd
     tmp_path = "#{ root }#{self.class.config.path}"
-    tmp_path += "#{ @sql_path }/#{ @sql_name }.sql.erb"
+    tmp_path += "#{ @sql_path }/#{ @sql_name }.{sql.erb,erb.sql}"
     tmp_path
   end
 end
