@@ -5,7 +5,7 @@ describe SqlQuery do
   let(:options) { { sql_name: :get_player_by_email, email: 'e@mail.dev' } }
   let(:query) { described_class.new(options) }
 
-  describe '#locate_file' do
+  describe '#file_path' do
     context 'when there is only one file with name' do
       it 'returns path to it' do
         expect(query.send(:file_path)).to include('get_player_by_email.sql.erb')
