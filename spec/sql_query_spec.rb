@@ -32,6 +32,14 @@ describe SqlQuery do
     it 'returns query string' do
       expect(query.sql).to eq "SELECT *\nFROM players\nWHERE email = 'e@mail.dev'\n"
     end
+
+    context 'when file is .erb.sql' do
+      let(:options) { { sql_name: :erb_sql, fake: 12 } }
+
+      it 'returns query string' do
+        expect(query.sql).to eq "SELECT 12\n"
+      end
+    end
   end
 
   describe '#pretty_sql' do
