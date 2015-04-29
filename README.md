@@ -75,7 +75,7 @@ WHERE email = 'e@mail.dev'
 If you need to have nested paths to your queries like ```player/get_by_email``` just use string instead of symbol as file name.
 
 Example:
-```
+```ruby
 SqlQuery.new('player/get_by_email', email: 'e@mail.dev')
 ```
 
