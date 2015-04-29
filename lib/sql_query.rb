@@ -3,7 +3,11 @@ require 'erb'
 class SqlQuery
   attr_reader :connection
 
-  def initialize(options = {})
+  def initialize(file_name, options = {})
+    unless file_name.is_a?(String) || file_name.is_a?(Symbol)
+      fail ArgumentError, 'SQL file name should be String or Symbol'
+    end
+    @sql_filename = file_name
     prepare_variables(options)
     @connection = ActiveRecord::Base.connection
   end
@@ -73,7 +77,7 @@ class SqlQuery
   def file_path
     files = Dir.glob(path)
     if files.size == 0
-      raise "File not found with name: #{ @sql_name } in #{self.class.config.path}#{ @file_path }"
+      raise "File not found: #{ @sql_filename }"
     elsif files.size > 1
       raise "More than one file found: #{ files.join(', ')}"
     else
@@ -84,7 +88,7 @@ class SqlQuery
   def path
     root = defined?(Rails) ? Rails.root.to_s : Dir.pwd
     tmp_path = "#{ root }#{self.class.config.path}"
-    tmp_path += "#{ @sql_path }/#{ @sql_name }.{sql.erb,erb.sql}"
+    tmp_path += "/#{ @sql_filename }.{sql.erb,erb.sql}"
     tmp_path
   end
 end

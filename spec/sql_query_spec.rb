@@ -2,8 +2,32 @@ require 'spec_helper'
 
 describe SqlQuery do
 
-  let(:options) { { sql_name: :get_player_by_email, email: 'e@mail.dev' } }
-  let(:query) { described_class.new(options) }
+  let(:options) { { email: 'e@mail.dev' } }
+  let(:file_name) { :get_player_by_email }
+  let(:query) { described_class.new(file_name, options) }
+
+  describe '#initialize' do
+
+    it 'sets instance variables for all options' do
+      expect(query.instance_variable_get(:@email)).to eq 'e@mail.dev'
+    end
+
+    context 'when options are set not in parentheses' do
+      let(:query) { described_class.new(file_name, email: 'e@mail.dev') }
+
+      it 'sets instance variables for all options' do
+        expect(query.instance_variable_get(:@email)).to eq 'e@mail.dev'
+      end
+    end
+
+    context 'file_name argument is not Symbol or String' do
+      let(:file_name) { { do: 'something' } }
+
+      it 'raises ArgumentError' do
+        expect{ query }.to raise_error(ArgumentError, 'SQL file name should be String or Symbol')
+      end
+    end
+  end
 
   describe '#file_path' do
     context 'when there is only one file with name' do
@@ -12,15 +36,15 @@ describe SqlQuery do
       end
     end
     context 'when there are no files' do
-      let(:options) { { sql_name: :not_exists } }
+      let(:file_name) { :not_exists }
 
       it 'raises error' do
-        expect{ query.send(:file_path) }.to raise_error('File not found with name: not_exists in /spec/sql_queries')
+        expect{ query.send(:file_path) }.to raise_error('File not found: not_exists')
       end
     end
 
     context 'when there are more than one matching files' do
-      let(:options) { { sql_name: :duplicated } }
+      let(:file_name) { :duplicated }
 
       it 'raises error' do
         expect{ query.send(:file_path) }.to raise_error.with_message(/More than one file found:/)
@@ -34,7 +58,8 @@ describe SqlQuery do
     end
 
     context 'when file is .erb.sql' do
-      let(:options) { { sql_name: :erb_sql, fake: 12 } }
+      let(:options) { { fake: 12 } }
+      let(:file_name) { :erb_sql }
 
       it 'returns query string' do
         expect(query.sql).to eq "SELECT 12\n"
@@ -65,6 +90,7 @@ describe SqlQuery do
         "INSERT INTO players (email) VALUES ('e@mail.dev')"
       )
     end
+
     after do
       ActiveRecord::Base.connection.execute(
         "DELETE FROM players"
