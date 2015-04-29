@@ -43,7 +43,7 @@ WHERE email = <%= quote @email %>
 You can use SQL like this:
 
 ```ruby
-> query = SqlQuery.new(sql_name: :get_player_by_email, email: 'e@mail.dev')
+> query = SqlQuery.new(:get_player_by_email, email: 'e@mail.dev')
 
 > query.execute
    (0.6ms)  SELECT * FROM players WHERE email = 'e@mail.dev'
@@ -68,6 +68,15 @@ WHERE email = 'e@mail.dev'
 => SELECT *
 FROM players
 WHERE email = 'e@mail.dev'
+```
+
+### initialization
+
+If you need to have nested paths to your queries like ```player/get_by_email``` just use string instead of symbol as file name.
+
+Example:
+```
+SqlQuery.new('player/get_by_email', email: 'e@mail.dev')
 ```
 
 ### Methods
