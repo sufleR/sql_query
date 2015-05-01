@@ -1,8 +1,18 @@
 # SqlQuery change log
 
-## 0.2.1 / Unreleased
+## 0.2.2 / Unreleased
 
 * [Added]
+
+* [Deprecated]
+
+* [Removed]
+
+* [Fixed]
+
+## 0.2.1 / 2015-05-01
+
+* [Added] support for activerecord >= 3.2
 
 * [Deprecated]
 
