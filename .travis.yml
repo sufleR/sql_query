@@ -1,9 +1,10 @@
 language: ruby
-env:
-  - 'RAILS_VERSION=3.2.21'
-  - 'RAILS_VERSION=4.0.13'
-  - 'RAILS_VERSION=4.1.10'
-  - 'RAILS_VERSION=4.2.1'
+
+gemfile:
+  - gemfiles/3.2.gemfile
+  - gemfiles/4.0.gemfile
+  - gemfiles/4.1.gemfile
+  - gemfiles/4.2.gemfile
 
 rvm:
   - '1.9.3'
@@ -18,5 +19,6 @@ addons:
 
 env:
   - BUILDER=travis
+
 before_script:
   - psql -c 'create database travis_ci_test;' -U postgres
