@@ -1,6 +1,6 @@
 # SqlQuery change log
 
-## 0.0.1 / Unreleased
+## 0.2.1 / Unreleased
 
 * [Added]
 
@@ -10,13 +10,13 @@
 
 * [Fixed]
 
-## 0.2.0 / Unreleased
+## 0.2.0 / 2015-05-01
 
 * [Added] First argument in initialize as sql file name with path
 
-* [Deprecated] sql_name and sql_path in options hash
+* [Deprecated] 
 
-* [Removed]
+* [Removed] sql_name and sql_path in options hash
 
 * [Fixed]
 

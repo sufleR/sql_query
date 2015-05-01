@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 Gem::Specification.new do |spec|
   spec.name          = "sql_query"
-  spec.version       = "0.1.0"
+  spec.version       = "0.2.0"
   spec.authors       = ["sufleR"]
   spec.email         = ["szymon.fracczak@netguru.co"]
   spec.summary       = %q{Ruby gem to load and execute SQL queries from `.sql.erb` templates}
