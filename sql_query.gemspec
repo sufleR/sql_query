@@ -6,7 +6,7 @@ Gem::Specification.new do |spec|
   spec.name          = "sql_query"
   spec.version       = "0.2.1"
   spec.authors       = ["sufleR"]
-  spec.email         = ["szymon.fracczak@netguru.co"]
+  spec.email         = ["szymon.fracczak@gmail.com"]
   spec.summary       = %q{Ruby gem to load and execute SQL queries from `.sql.erb` templates}
   spec.description   = %q{
     It makes working with pure SQL easier with syntax highlighting.
