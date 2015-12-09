@@ -1,6 +1,6 @@
 # SqlQuery change log
 
-## 0.2.2 / Unreleased
+## 0.3.1 / Unreleased
 
 * [Added]
 
@@ -9,6 +9,10 @@
 * [Removed]
 
 * [Fixed]
+
+## 0.3.0 / Unreleased
+
+* [Added] support for partials
 
 ## 0.2.1 / 2015-05-01
 
