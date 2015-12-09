@@ -118,6 +118,12 @@ FROM players
 WHERE <%= partial :email_partial %>
 ```
 
+## Examples
+
+Check examples folder for some usefull queries.
+
+If you have some examples to share please make pull request.
+
 ## Contributing
 
 1. Fork it ( https://github.com/[my-github-username]/sql_query/fork )

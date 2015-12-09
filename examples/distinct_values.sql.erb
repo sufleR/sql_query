@@ -1,0 +1,14 @@
+WITH RECURSIVE t AS (
+  SELECT MIN(<%= @column_name %>) AS <%= @column_name %>
+  FROM <%= @table_name %>
+  UNION ALL
+  SELECT (
+    SELECT MIN(<%= @column_name %>) FROM <%= @table_name %>
+    WHERE <%= @column_name %> > t.<%= @column_name %>)
+  FROM t WHERE t.<%= @column_name %> IS NOT NULL
+)
+SELECT <%= @column_name %> FROM t WHERE <%= @column_name %> IS NOT NULL
+<% if @with_nulls %>
+  UNION ALL
+  SELECT NULL WHERE EXISTS(SELECT 1 FROM <%= @table_name %> WHERE <%= @column_name %> IS NULL)
+<% end %>
