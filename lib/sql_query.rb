@@ -8,7 +8,8 @@ class SqlQuery
       fail ArgumentError, 'SQL file name should be String or Symbol'
     end
     @sql_filename = file_name
-    prepare_variables(options)
+    @options = options
+    prepare_variables
     @connection = ActiveRecord::Base.connection
   end
 
@@ -38,6 +39,13 @@ class SqlQuery
     sql.gsub(/(\n|\s)+/,' ')
   end
 
+  def partial(partial_name, partial_options = {})
+    path, file_name = split_to_path_and_name(partial_name)
+    self.class.new("#{path}/_#{file_name}",
+                   @options.merge(partial_options),
+                  ).sql
+  end
+
   def self.config=(value)
     @config = value
   end
@@ -60,6 +68,15 @@ class SqlQuery
 
   private
 
+  def split_to_path_and_name(file)
+    if file.is_a?(Symbol)
+      ['', file.to_s]
+    else
+      parts = file.rpartition('/')
+      [parts.first, parts.last]
+    end
+  end
+
   def pretty(value)
     # override inspect to be more human readable from console
     # code copy from ActiveRecord
@@ -68,8 +85,8 @@ class SqlQuery
     value
   end
 
-  def prepare_variables(options)
-    options.each do |k, v|
+  def prepare_variables
+    @options.each do |k, v|
       instance_variable_set("@#{k}", v)
     end
   end
@@ -77,7 +94,7 @@ class SqlQuery
   def file_path
     files = Dir.glob(path)
     if files.size == 0
-      raise "File not found: #{ @sql_filename }"
+      raise "File not found: #{@sql_filename}"
     elsif files.size > 1
       raise "More than one file found: #{ files.join(', ')}"
     else
@@ -87,8 +104,8 @@ class SqlQuery
 
   def path
     root = defined?(Rails) ? Rails.root.to_s : Dir.pwd
-    tmp_path = "#{ root }#{self.class.config.path}"
-    tmp_path += "/#{ @sql_filename }.{sql.erb,erb.sql}"
+    tmp_path = "#{root}#{self.class.config.path}"
+    tmp_path += "/#{@sql_filename}.{sql.erb,erb.sql}"
     tmp_path
   end
 end
