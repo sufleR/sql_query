@@ -97,6 +97,26 @@ SqlQuery.configure do |config|
   config.path = '/app/sql_templates'
 end
 ```
+### Partials
+
+You can prepare part of sql query in partial file and reuse it in multiple queries.
+
+Partial file should start with '_'. 
+
+Example:
+
+```sql
+# app/sql_queries/_email_partial.sql.erb
+players.email = <%= quote @email %>
+```
+
+and use this partial like this:
+
+```sql
+SELECT *
+FROM players
+WHERE <%= partial :email_partial %>
+```
 
 ## Contributing
 
