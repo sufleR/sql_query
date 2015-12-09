@@ -105,7 +105,7 @@ describe SqlQuery do
   describe '#partial' do
     let(:file_name) { :get_player_by_email_with_template }
     it 'resolves partials as parts of sql queries' do
-      expect(query.sql).to eq("SELECT *\nFROM players\nWHERE users.email = 'e@mail.dev'\n\n")
+      expect(query.sql).to eq("SELECT *\nFROM players\nWHERE players.email = 'e@mail.dev'\n\n")
     end
   end
 end
