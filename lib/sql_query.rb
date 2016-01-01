@@ -19,8 +19,9 @@ class SqlQuery
     pretty(msg)
   end
 
-  def execute
-    connection.execute(prepared_for_logs).entries
+  def execute(prepare = true)
+    to_execute = prepare ? prepared_for_logs : sql
+    connection.execute(to_execute).entries
   end
 
   def sql

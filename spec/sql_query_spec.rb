@@ -100,6 +100,20 @@ describe SqlQuery do
     it 'returns data from database' do
       expect(query.execute).to eq [{ 'email' => 'e@mail.dev'}]
     end
+
+    context 'when prepare argument is true' do
+      it 'executes prepared query for logs' do
+        expect(query).to receive(:prepared_for_logs) { '' }
+        query.execute
+      end
+    end
+
+    context 'when prepare argument is false' do
+      it 'executes unchanged sql query' do
+        expect(query).not_to receive(:prepared_for_logs)
+        query.execute(false)
+      end
+    end
   end
 
   describe '#partial' do
