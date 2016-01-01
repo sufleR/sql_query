@@ -108,20 +108,4 @@ describe SqlQuery do
       expect(query.sql).to eq("SELECT *\nFROM players\nWHERE players.email = 'e@mail.dev'\n\n")
     end
   end
-
-  describe '#prepared_for_logs' do
-    context 'when prepare_for_logs option is not set' do
-      it 'returns string without new lines' do
-        expect(query.prepared_for_logs)
-          .to eq("SELECT * FROM players WHERE email = 'e@mail.dev' ")
-      end
-    end
-
-    context 'when prepare_for_logs option is set to false' do
-      let(:options) { { email: 'e@mail.dev', prepare_for_logs: false } }
-      it 'returns unchanged sql' do
-        expect(query.prepared_for_logs).to eq(query.sql)
-      end
-    end
-  end
 end
