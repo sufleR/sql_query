@@ -36,6 +36,7 @@ class SqlQuery
   end
 
   def prepared_for_logs
+    return sql if @prepare_for_logs == false
     sql.gsub(/(\n|\s)+/,' ')
   end
 
