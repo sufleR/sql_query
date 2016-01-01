@@ -108,4 +108,11 @@ describe SqlQuery do
       expect(query.sql).to eq("SELECT *\nFROM players\nWHERE players.email = 'e@mail.dev'\n\n")
     end
   end
+
+  describe '#prepared_for_logs' do
+    it 'returns string without new lines' do
+      expect(query.prepared_for_logs)
+        .to eq("SELECT * FROM players WHERE email = 'e@mail.dev' ")
+    end
+  end
 end
