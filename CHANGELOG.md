@@ -1,6 +1,6 @@
 # SqlQuery change log
 
-## 0.3.1 / Unreleased
+## 0.4.1 / Unreleased
 
 * [Added]
 
@@ -9,6 +9,12 @@
 * [Removed]
 
 * [Fixed]
+
+## 0.4.0 / 2016-01-20
+
+* [Added] execute will accept boolean attribute.
+When set to false it will use raw query instead of prepared for logs.
+By default it will be set to true.
 
 ## 0.3.0 / 2015-12-10
 

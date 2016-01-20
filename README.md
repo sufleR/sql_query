@@ -81,7 +81,7 @@ SqlQuery.new('player/get_by_email', email: 'e@mail.dev')
 
 ### Methods
 
-- **execute** - executes query and returns result data.
+- **execute** - executes query and returns result data. It accepts boolean argument. When argument is false it will raw sql query instead of prepared_for_logs.
 - **explain** - runs explain for SQL from template
 - **sql** - returns SQL string
 - **pretty_sql** - returns SQL string prettier to read in console
