@@ -79,6 +79,10 @@ Example:
 SqlQuery.new('player/get_by_email', email: 'e@mail.dev')
 ```
 
+#### Special options
+
+* db_connection - If you want to change default connection to database you may do it for every query execution using this option.
+
 ### Methods
 
 - **execute** - executes query and returns result data. It accepts boolean argument. When argument is false it will run raw sql query instead of prepared_for_logs.
@@ -89,14 +93,19 @@ SqlQuery.new('player/get_by_email', email: 'e@mail.dev')
 
 ### Configuration
 
-If you don't like default path to your queries you can configure it in initializer.
-
 ```ruby
 # config/initializers/sql_query.rb
 SqlQuery.configure do |config|
   config.path = '/app/sql_templates'
+  config.adapter = ActiveRecord::Base
 end
 ```
+
+#### Configuration options
+* path - If you don't like default path to your queries you can change it here.
+
+* adapter - class which implements connection method.
+
 ### Partials
 
 You can prepare part of sql query in partial file and reuse it in multiple queries.

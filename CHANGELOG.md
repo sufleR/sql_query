@@ -1,6 +1,6 @@
 # SqlQuery change log
 
-## 0.4.1 / Unreleased
+## 0.5.1 / Unreleased
 
 * [Added]
 
@@ -9,6 +9,10 @@
 * [Removed]
 
 * [Fixed]
+
+## 0.5.0 / 2016-04-26
+
+* [Added] possibility to overwrite default connection class and connection directly using db_connection option.
 
 ## 0.4.0 / 2016-01-20
 
