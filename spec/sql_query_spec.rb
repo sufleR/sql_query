@@ -6,6 +6,10 @@ describe SqlQuery do
   let(:file_name) { :get_player_by_email }
   let(:query) { described_class.new(file_name, options) }
 
+  class Model < ActiveRecord::Base
+    self.abstract_class = true
+  end
+
   describe '#initialize' do
 
     it 'sets instance variables for all options' do
@@ -20,11 +24,19 @@ describe SqlQuery do
       end
     end
 
-    context 'file_name argument is not Symbol or String' do
+    context 'when file_name argument is not Symbol or String' do
       let(:file_name) { { do: 'something' } }
 
       it 'raises ArgumentError' do
         expect{ query }.to raise_error(ArgumentError, 'SQL file name should be String or Symbol')
+      end
+    end
+
+    context 'with db_connection option' do
+      let(:options) { { db_connection: Model.connection } }
+
+      it 'sets connection to requested' do
+        expect(query.connection).to eq(Model.connection)
       end
     end
   end
@@ -121,12 +133,29 @@ describe SqlQuery do
     it 'resolves partials as parts of sql queries' do
       expect(query.sql).to eq("SELECT *\nFROM players\nWHERE players.email = 'e@mail.dev'\n\n")
     end
+
+    context 'when partial name is string with file path' do
+      let(:file_name) { :get_player_by_email }
+
+      it 'should find file by whole path and _name' do
+        query
+        expect(described_class)
+          .to receive(:new).with('some/path/to/_file.sql', options) { query }
+        query.partial('some/path/to/file.sql', {})
+      end
+    end
   end
 
   describe '#prepared_for_logs' do
     it 'returns string without new lines' do
       expect(query.prepared_for_logs)
         .to eq("SELECT * FROM players WHERE email = 'e@mail.dev' ")
+    end
+  end
+
+  describe '.config' do
+    it 'returns configuration instance' do
+      expect(described_class.config).to be_kind_of(SqlQuery::Config)
     end
   end
 end

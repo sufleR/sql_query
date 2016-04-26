@@ -9,8 +9,8 @@ class SqlQuery
     end
     @sql_filename = file_name
     @options = options
+    @connection =  options.try(:delete, :db_connection) || self.class.config.adapter.connection
     prepare_variables
-    @connection = ActiveRecord::Base.connection
   end
 
   def explain
@@ -47,10 +47,8 @@ class SqlQuery
                   ).sql
   end
 
-  def self.config=(value)
-    @config = value
-  end
 
+  attr_writer :config
   def self.config
     @config ||= Config.new
   end
@@ -60,10 +58,11 @@ class SqlQuery
   end
 
   class Config
-    attr_accessor :path
+    attr_accessor :path, :adapter
 
     def initialize
       @path = '/app/sql_queries'
+      @adapter = ActiveRecord::Base
     end
   end
 
@@ -87,6 +86,7 @@ class SqlQuery
   end
 
   def prepare_variables
+    return unless @options.present?
     @options.each do |k, v|
       instance_variable_set("@#{k}", v)
     end
