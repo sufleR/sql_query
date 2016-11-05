@@ -13,7 +13,7 @@ rvm:
   - '2.3.1'
 
 addons:
-  postgresql: '9.5'
+  postgresql: '9.4'
   code_climate:
     repo_token: 743bf63d7a422064551b35931628682c6cad81a30743edee7ff9ea8af061397d
 
