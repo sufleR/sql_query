@@ -82,6 +82,7 @@ SqlQuery.new('player/get_by_email', email: 'e@mail.dev')
 #### Special options
 
 * db_connection - If you want to change default connection to database you may do it for every query execution using this option.
+* sql_file_path - it will override default path where gem will look for sql file.
 
 ### Methods
 
