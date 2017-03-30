@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 if ENV['BUILDER'] == 'travis'
-  require "codeclimate-test-reporter"
+  require 'codeclimate-test-reporter'
   CodeClimate::TestReporter.start
 else
   require 'simplecov'
@@ -26,15 +28,15 @@ RSpec.configure do |config|
   end
 
   connection = if ENV['BUILDER'] == 'travis'
-                 "postgres://postgres@localhost/travis_ci_test"
+                 'postgres://postgres@localhost/travis_ci_test'
                else
-                 "postgres://sqlquery:sqlquery@localhost/sqlquery"
+                 'postgres://sqlquery:sqlquery@localhost/sqlquery'
                end
 
   ActiveRecord::Base.establish_connection(connection)
 
   ActiveRecord::Base.connection.execute(
-    "CREATE TABLE IF NOT EXISTS players (email text);"
+    'CREATE TABLE IF NOT EXISTS players (email text);'
   )
 
   config.order = :random

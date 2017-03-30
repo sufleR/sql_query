@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'erb'
 
 class SqlQuery
@@ -5,16 +7,17 @@ class SqlQuery
 
   def initialize(file_name, options = {})
     unless file_name.is_a?(String) || file_name.is_a?(Symbol)
-      fail ArgumentError, 'SQL file name should be String or Symbol'
+      raise ArgumentError, 'SQL file name should be String or Symbol'
     end
     @sql_filename = file_name
     @options = options
-    @connection =  options.try(:delete, :db_connection) || self.class.config.adapter.connection
+    @connection = options.try(:delete, :db_connection) ||
+                  self.class.config.adapter.connection
     prepare_variables
   end
 
   def explain
-    msg = "EXPLAIN for: \n#{ sql }\n"
+    msg = "EXPLAIN for: \n#{sql}\n"
     msg += connection.explain(sql)
     pretty(msg)
   end
@@ -32,21 +35,17 @@ class SqlQuery
     pretty(sql.dup)
   end
 
-  def quote(value)
-    connection.quote(value)
-  end
+  delegate :quote, to: :connection
 
   def prepared_for_logs
-    sql.gsub(/(\n|\s)+/,' ')
+    sql.gsub(/(\n|\s)+/, ' ')
   end
 
   def partial(partial_name, partial_options = {})
     path, file_name = split_to_path_and_name(partial_name)
     self.class.new("#{path}/_#{file_name}",
-                   @options.merge(partial_options),
-                  ).sql
+                   @options.merge(partial_options)).sql
   end
-
 
   attr_writer :config
   def self.config
@@ -81,12 +80,14 @@ class SqlQuery
     # override inspect to be more human readable from console
     # code copy from ActiveRecord
     # https://github.com/rails/rails/blob/master/activerecord/lib/active_record/explain.rb#L30
-    def value.inspect; self; end
+    def value.inspect
+      self
+    end
     value
   end
 
   def prepare_variables
-    return unless @options.present?
+    return if @options.blank?
     @options.each do |k, v|
       instance_variable_set("@#{k}", v)
     end
@@ -94,10 +95,10 @@ class SqlQuery
 
   def file_path
     files = Dir.glob(path)
-    if files.size == 0
+    if files.empty?
       raise "File not found: #{@sql_filename}"
     elsif files.size > 1
-      raise "More than one file found: #{ files.join(', ')}"
+      raise "More than one file found: #{files.join(', ')}"
     else
       files.first
     end
