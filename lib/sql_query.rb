@@ -104,8 +104,12 @@ class SqlQuery
   end
 
   def path
-    root = defined?(Rails) ? Rails.root.to_s : Dir.pwd
-    tmp_path = "#{root}#{self.class.config.path}"
+    if @sql_file_path.present?
+      tmp_path = @sql_file_path
+    else
+      root = defined?(Rails) ? Rails.root.to_s : Dir.pwd
+      tmp_path = "#{root}#{self.class.config.path}"
+    end
     tmp_path += "/#{@sql_filename}.{sql.erb,erb.sql}"
     tmp_path
   end

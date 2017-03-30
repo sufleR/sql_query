@@ -51,7 +51,7 @@ describe SqlQuery do
       let(:file_name) { :not_exists }
 
       it 'raises error' do
-        expect{ query.send(:file_path) }.to raise_error('File not found: not_exists')
+        expect { query.send(:file_path) }.to raise_error('File not found: not_exists')
       end
     end
 
@@ -60,6 +60,17 @@ describe SqlQuery do
 
       it 'raises error' do
         expect{ query.send(:file_path) }.to raise_error.with_message(/More than one file found:/)
+      end
+    end
+  end
+
+  describe '#path' do
+    context 'when there is sql_file_path option' do
+      let(:options) { { sql_file_path: '/path_to_file' } }
+      let(:file_name) { 'fname' }
+
+      it 'sets it as dir for file' do
+        expect(query.send(:path)).to eq("/path_to_file/fname.{sql.erb,erb.sql}")
       end
     end
   end
