@@ -1,6 +1,6 @@
 # SqlQuery change log
 
-## 0.5.1 / Unreleased
+## 0.6.1 / Unreleased
 
 * [Added]
 
@@ -9,6 +9,10 @@
 * [Removed]
 
 * [Fixed]
+
+## 0.6.0 / 2017-03-30
+
+* [Added] possibility to override path where gem will look for sql file.
 
 ## 0.5.0 / 2016-04-26
 
