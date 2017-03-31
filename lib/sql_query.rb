@@ -35,7 +35,9 @@ class SqlQuery
     pretty(sql.dup)
   end
 
-  delegate :quote, to: :connection
+  def quote
+    connection.quote
+  end
 
   def prepared_for_logs
     sql.gsub(/(\n|\s)+/, ' ')
