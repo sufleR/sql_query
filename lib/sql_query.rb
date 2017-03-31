@@ -35,8 +35,8 @@ class SqlQuery
     pretty(sql.dup)
   end
 
-  def quote
-    connection.quote
+  def quote(value) # rubocop:disable Rails/Delegate
+    connection.quote(value)
   end
 
   def prepared_for_logs
