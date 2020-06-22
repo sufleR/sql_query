@@ -145,6 +145,38 @@ describe SqlQuery do
     end
   end
 
+  describe '#exec_query' do
+    before do
+      ActiveRecord::Base.connection.execute(
+        "INSERT INTO players (email) VALUES ('e@mail.dev')"
+      )
+    end
+
+    after do
+      ActiveRecord::Base.connection.execute(
+        'DELETE FROM players'
+      )
+    end
+
+    it 'returns data from database' do
+      expect(query.exec_query).to eq [{ 'email' => 'e@mail.dev' }]
+    end
+
+    context 'when prepare argument is true' do
+      it 'executes prepared query for logs' do
+        expect(query).to receive(:prepared_for_logs) { '' }
+        query.exec_query
+      end
+    end
+
+    context 'when prepare argument is false' do
+      it 'executes unchanged sql query' do
+        expect(query).not_to receive(:prepared_for_logs)
+        query.exec_query(false)
+      end
+    end
+  end
+
   describe '#partial' do
     let(:file_name) { :get_player_by_email_with_template }
     it 'resolves partials as parts of sql queries' do

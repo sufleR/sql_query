@@ -27,6 +27,11 @@ class SqlQuery
     connection.execute(to_execute).entries
   end
 
+  def exec_query(prepare = true)
+    to_execute = prepare ? prepared_for_logs : sql
+    connection.exec_query(to_execute).to_a
+  end
+
   def sql
     @sql ||= ERB.new(File.read(file_path)).result(binding)
   end
