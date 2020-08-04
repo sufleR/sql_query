@@ -12,7 +12,7 @@ end
 
 require 'active_record'
 require 'sql_query'
-require 'pry'
+#require 'pry'
 
 SqlQuery.configure do |config|
   config.path = '/spec/sql_queries'

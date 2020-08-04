@@ -1,7 +1,6 @@
-# coding: utf-8
 # frozen_string_literal: true
 
-lib = File.expand_path('../lib', __FILE__)
+lib = File.expand_path('lib', __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 Gem::Specification.new do |spec|
@@ -24,14 +23,13 @@ Gem::Specification.new do |spec|
 
   spec.required_ruby_version = '>= 1.9.3'
 
-  spec.add_dependency 'activerecord', '>= 3.2'
+  spec.add_dependency 'activerecord', '>= 3.2', '< 6.0'
   spec.add_development_dependency 'bundler', '~> 1.13'
+  spec.add_development_dependency 'pg', '~> 0.18'
   spec.add_development_dependency 'rake', '~> 11.3'
   spec.add_development_dependency 'rspec', '~> 3.4'
-  spec.add_development_dependency 'pg', '~> 0.18'
-  spec.add_development_dependency 'pry', '~> 0.10'
   spec.add_development_dependency 'with_model', '~> 1.2'
-  spec.add_development_dependency 'codeclimate-test-reporter', '~> 0.4'
   spec.add_development_dependency 'appraisal'
-  spec.add_development_dependency 'rubocop'
+  spec.add_development_dependency 'rubocop', '<= 0.81'
+  spec.add_development_dependency 'simplecov'
 end
