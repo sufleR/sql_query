@@ -31,6 +31,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rspec', '~> 3.4'
   spec.add_development_dependency 'rubocop', '<= 0.81'
   spec.add_development_dependency 'simplecov'
-  spec.add_development_dependency 'codeclimate-test-reporter'
   spec.add_development_dependency 'with_model', '~> 1.2'
 end

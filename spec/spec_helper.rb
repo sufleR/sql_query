@@ -1,13 +1,8 @@
 # frozen_string_literal: true
 
-if ENV['BUILDER'] == 'travis'
-  require 'codeclimate-test-reporter'
-  CodeClimate::TestReporter.start
-else
-  require 'simplecov'
-  SimpleCov.start do
-    add_filter '/spec/'
-  end
+require 'simplecov'
+SimpleCov.start do
+  add_filter '/spec/'
 end
 
 require 'active_record'
