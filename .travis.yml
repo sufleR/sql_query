@@ -1,8 +1,13 @@
+env:
+  global:
+    - CC_TEST_REPORTER_ID=743bf63d7a422064551b35931628682c6cad81a30743edee7ff9ea8af061397d
 language: ruby
 cache: bundler
 before_install:
   - gem uninstall -v '>= 2' -i $(rvm gemdir)@global -ax bundler || true
   - gem install bundler -v '< 2'
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
 
 gemfile:
   - gemfiles/3.2.gemfile
@@ -16,10 +21,11 @@ rvm:
 
 addons:
   postgresql: '9.4'
-  code_climate:
-    repo_token: 743bf63d7a422064551b35931628682c6cad81a30743edee7ff9ea8af061397d
 
 env:
   - BUILDER=travis
 before_script:
   - psql -c 'create database travis_ci_test;' -U postgres
+  - ./cc-test-reporter before-build
+after_script:
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT

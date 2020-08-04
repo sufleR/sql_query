@@ -1,5 +1,4 @@
 [![Gem Version](https://badge.fury.io/rb/sql_query.svg)](http://badge.fury.io/rb/sql_query)
-[![Dependency Status](https://gemnasium.com/sufleR/sql_query.svg)](https://gemnasium.com/sufleR/sql_query)
 [![Code Climate](https://codeclimate.com/github/sufleR/sql_query/badges/gpa.svg)](https://codeclimate.com/github/sufleR/sql_query)
 [![Test Coverage](https://codeclimate.com/github/sufleR/sql_query/badges/coverage.svg)](https://codeclimate.com/github/sufleR/sql_query)
 [![Build Status](https://travis-ci.org/sufleR/sql_query.svg?branch=master)](https://travis-ci.org/sufleR/sql_query)
