@@ -24,12 +24,13 @@ Gem::Specification.new do |spec|
   spec.required_ruby_version = '>= 1.9.3'
 
   spec.add_dependency 'activerecord', '>= 3.2', '< 6.0'
+  spec.add_development_dependency 'appraisal'
   spec.add_development_dependency 'bundler'
   spec.add_development_dependency 'pg', '~> 0.18'
   spec.add_development_dependency 'rake', '~> 13.0'
   spec.add_development_dependency 'rspec', '~> 3.4'
-  spec.add_development_dependency 'with_model', '~> 1.2'
-  spec.add_development_dependency 'appraisal'
   spec.add_development_dependency 'rubocop', '<= 0.81'
   spec.add_development_dependency 'simplecov'
+  spec.add_development_dependency 'codeclimate-test-reporter'
+  spec.add_development_dependency 'with_model', '~> 1.2'
 end
