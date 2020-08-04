@@ -1,6 +1,6 @@
 # SqlQuery change log
 
-## 0.6.1 / Unreleased
+## 0.7.1 / Unreleased
 
 * [Added]
 
@@ -9,6 +9,11 @@
 * [Removed]
 
 * [Fixed]
+
+## 0.7.0 / 2020-08-04
+
+* [Added] support for exec_query from ActiveRecord https://github.com/sufleR/sql_query/pull/7
+
 
 ## 0.6.0 / 2017-03-30
 
