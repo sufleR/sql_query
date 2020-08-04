@@ -9,6 +9,7 @@ class SqlQuery
     unless file_name.is_a?(String) || file_name.is_a?(Symbol)
       raise ArgumentError, 'SQL file name should be String or Symbol'
     end
+
     @sql_filename = file_name
     @options = options
     @connection = options.try(:delete, :db_connection) ||
@@ -40,7 +41,7 @@ class SqlQuery
     pretty(sql.dup)
   end
 
-  def quote(value) # rubocop:disable Rails/Delegate
+  def quote(value)
     connection.quote(value)
   end
 
@@ -95,6 +96,7 @@ class SqlQuery
 
   def prepare_variables
     return if @options.blank?
+
     @options.each do |k, v|
       instance_variable_set("@#{k}", v)
     end
