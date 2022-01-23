@@ -1,6 +1,6 @@
 # SqlQuery change log
 
-## 0.7.2 / Unreleased
+## 0.7.3 / Unreleased
 
 * [Added]
 
@@ -10,10 +10,13 @@
 
 * [Fixed]
 
-## 0.7.1 / 2021-12-14
+## 0.7.2 / 2022-01-23
 
 * [Added] rails 6.1 as supported version https://github.com/sufleR/sql_query/pull/10
 
+## 0.7.1 / 2021-12-14
+
+* [Added] rails 6.1 as supported version https://github.com/sufleR/sql_query/pull/10
 
 ## 0.7.0 / 2020-08-04
 
