@@ -12,7 +12,7 @@
 
 ## 0.7.2 / 2022-01-23
 
-* [Added] rails 6.1 as supported version https://github.com/sufleR/sql_query/pull/10
+* [Added] rails 7.0 as supported version https://github.com/sufleR/sql_query/pull/12
 
 ## 0.7.1 / 2021-12-14
 
