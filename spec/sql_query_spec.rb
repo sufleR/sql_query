@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 describe SqlQuery do
-  let(:options) { { email: 'e@mail.dev' } }
+  let(:options) { { email: "e@mail.dev ' " } }
   let(:file_name) { :get_player_by_email }
   let(:query) { described_class.new(file_name, options) }
 
@@ -13,7 +13,7 @@ describe SqlQuery do
 
   describe '#initialize' do
     it 'sets instance variables for all options' do
-      expect(query.instance_variable_get(:@email)).to eq 'e@mail.dev'
+      expect(query.instance_variable_get(:@email)).to eq options[:email]
     end
 
     context 'when options are set not in parentheses' do
@@ -82,7 +82,7 @@ describe SqlQuery do
   describe '#sql' do
     it 'returns query string' do
       expect(query.sql)
-        .to eq("SELECT *\nFROM players\nWHERE email = 'e@mail.dev'\n")
+        .to eq("SELECT *\nFROM players\nWHERE email = 'e@mail.dev '' '\n")
     end
 
     context 'when file is .erb.sql' do
@@ -98,7 +98,7 @@ describe SqlQuery do
   describe '#pretty_sql' do
     it 'returns query string' do
       expect(query.pretty_sql)
-        .to eq("SELECT *\nFROM players\nWHERE email = 'e@mail.dev'\n")
+        .to eq("SELECT *\nFROM players\nWHERE email = 'e@mail.dev '' '\n")
     end
   end
 
@@ -107,7 +107,7 @@ describe SqlQuery do
     it 'returns explain string' do
       expect(explain).to include 'EXPLAIN for:'
       expect(explain).to include 'FROM players'
-      expect(explain).to include "WHERE email = 'e@mail.dev'"
+      expect(explain).to include "WHERE email = 'e@mail.dev '' '"
       expect(explain).to include 'QUERY PLAN'
       expect(explain).to include 'Seq Scan on players'
     end
@@ -116,7 +116,7 @@ describe SqlQuery do
   describe '#execute' do
     before do
       ActiveRecord::Base.connection.execute(
-        "INSERT INTO players (email) VALUES ('e@mail.dev')"
+        "INSERT INTO players (email) VALUES ('e@mail.dev '' ')"
       )
     end
 
@@ -127,7 +127,7 @@ describe SqlQuery do
     end
 
     it 'returns data from database' do
-      expect(query.execute).to eq [{ 'email' => 'e@mail.dev' }]
+      expect(query.execute).to eq [{ 'email' => "e@mail.dev ' " }]
     end
 
     context 'when prepare argument is true' do
@@ -148,7 +148,7 @@ describe SqlQuery do
   describe '#exec_query' do
     before do
       ActiveRecord::Base.connection.execute(
-        "INSERT INTO players (email) VALUES ('e@mail.dev')"
+        "INSERT INTO players (email) VALUES ('e@mail.dev '' ')"
       )
     end
 
@@ -159,7 +159,7 @@ describe SqlQuery do
     end
 
     it 'returns data from database' do
-      expect(query.exec_query).to eq [{ 'email' => 'e@mail.dev' }]
+      expect(query.exec_query).to eq [{ 'email' => "e@mail.dev ' " }]
     end
 
     context 'when prepare argument is true' do
@@ -181,7 +181,7 @@ describe SqlQuery do
     let(:file_name) { :get_player_by_email_with_template }
     it 'resolves partials as parts of sql queries' do
       expect(query.sql)
-        .to eq("SELECT *\nFROM players\nWHERE players.email = 'e@mail.dev'\n\n")
+        .to eq("SELECT *\nFROM players\nWHERE players.email = 'e@mail.dev '' '\n\n")
     end
 
     context 'when partial name is string with file path' do
@@ -202,6 +202,15 @@ describe SqlQuery do
     it 'returns string without new lines' do
       expect(query.prepared_for_logs)
         .to eq("SELECT * FROM players WHERE email = 'e@mail.dev    ' ")
+    end
+
+    context 'when qote is inside parameter' do
+      let(:options) { { email: "e@mail.dev  '  " } }
+
+      it 'returns string without new lines and changed parameter' do
+        expect(query.prepared_for_logs)
+          .to eq("SELECT * FROM players WHERE email = 'e@mail.dev  ''  ' ")
+      end
     end
   end
 
