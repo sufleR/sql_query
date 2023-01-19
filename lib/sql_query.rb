@@ -46,7 +46,11 @@ class SqlQuery
   end
 
   def prepared_for_logs
-    sql.gsub(/(\n|\s)+/, ' ')
+    sql
+      .split("'")
+      .each_with_index
+      .map { |s, index| index % 2 == 0 ? s.gsub(/(\n|\s)+/, ' ') : s }
+      .join("'")
   end
 
   def partial(partial_name, partial_options = {})

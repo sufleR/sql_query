@@ -197,9 +197,11 @@ describe SqlQuery do
   end
 
   describe '#prepared_for_logs' do
+    let(:options) { { email: 'e@mail.dev    ' } }
+
     it 'returns string without new lines' do
       expect(query.prepared_for_logs)
-        .to eq("SELECT * FROM players WHERE email = 'e@mail.dev' ")
+        .to eq("SELECT * FROM players WHERE email = 'e@mail.dev    ' ")
     end
   end
 
