@@ -34,7 +34,7 @@ class SqlQuery
   end
 
   def sql
-    @sql ||= ERB.new(File.read(file_path)).result(binding)
+    @sql ||= prepare_query(false)
   end
 
   def pretty_sql
@@ -46,7 +46,7 @@ class SqlQuery
   end
 
   def prepared_for_logs
-    sql.gsub(/(\n|\s)+/, ' ')
+    @sql_for_logs ||= prepare_query(true)
   end
 
   def partial(partial_name, partial_options = {})
@@ -74,6 +74,12 @@ class SqlQuery
   end
 
   private
+
+  def prepare_query(for_logs)
+    query_template = File.read(file_path)
+    query_template = query_template.gsub(/(\n|\s)+/, ' ') if for_logs
+    ERB.new(query_template).result(binding)
+  end
 
   def split_to_path_and_name(file)
     if file.is_a?(Symbol)
