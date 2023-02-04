@@ -1,6 +1,6 @@
 # SqlQuery change log
 
-## 0.7.3 / Unreleased
+## 0.7.4 / Unreleased
 
 * [Added]
 
@@ -9,6 +9,11 @@
 * [Removed]
 
 * [Fixed]
+
+## 0.7.3 / 2023-02-04
+
+* [Fixed] when sql parameter had multiple whitespaces than prepared_for_logs was changing them
+          to single space. https://github.com/sufleR/sql_query/pull/17
 
 ## 0.7.2 / 2022-01-23
 
