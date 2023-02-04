@@ -201,6 +201,16 @@ describe SqlQuery do
       expect(query.prepared_for_logs)
         .to eq("SELECT * FROM players WHERE email = 'e@mail.dev' ")
     end
+
+    context 'when embedded params have multiple whitespaces' do
+      let(:options) { { email: '   e@mail.dev   ' } }
+      let(:query) { described_class.new(file_name, options) }
+
+      it 'returns string without multiple whitespaces except embedded params' do
+        expect(query.prepared_for_logs)
+          .to eq("SELECT * FROM players WHERE email = '   e@mail.dev   ' ")
+      end
+    end
   end
 
   describe '.config' do
