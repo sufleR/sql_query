@@ -1,6 +1,6 @@
 # SqlQuery change log
 
-## 0.7.3 / Unreleased
+## 0.7.5 / Unreleased
 
 * [Added]
 
@@ -9,6 +9,12 @@
 * [Removed]
 
 * [Fixed]
+
+## 0.7.4 / 2024-04-20
+
+* [Added] Remove upper restriction for rails
+
+## 0.7.3 no changes
 
 ## 0.7.2 / 2022-01-23
 
