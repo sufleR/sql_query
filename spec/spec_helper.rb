@@ -7,7 +7,7 @@ end
 
 require 'active_record'
 require 'sql_query'
-#require 'pry'
+# require 'pry'
 
 SqlQuery.configure do |config|
   config.path = '/spec/sql_queries'
@@ -22,8 +22,8 @@ RSpec.configure do |config|
     mocks.verify_partial_doubles = true
   end
 
-  connection = if ENV['BUILDER'] == 'travis'
-                 'postgres://postgres@localhost/travis_ci_test'
+  connection = if ENV['CI']
+                 'postgres://postgres:postgres@localhost/sqlquery_test'
                else
                  'postgres://sqlquery:sqlquery@localhost/sqlquery'
                end

@@ -17,7 +17,7 @@ jobs:
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: travis_ci_test
+          POSTGRES_DB: sqlquery_test
         ports:
           - 5432:5432
         options: >-
@@ -27,7 +27,7 @@ jobs:
           --health-retries 5
 
     env:
-      BUILDER: travis
+      CI: true
       PGHOST: localhost
       PGUSER: postgres
       PGPASSWORD: postgres
@@ -43,7 +43,7 @@ jobs:
           bundler-cache: true
 
       - name: Setup database
-        run: psql -h localhost -U postgres -c 'CREATE DATABASE travis_ci_test;'
+        run: psql -h localhost -U postgres -c 'CREATE DATABASE sqlquery_test;'
 
       - name: Run tests
         run: bundle exec rspec

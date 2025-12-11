@@ -1,0 +1,33 @@
+AllCops:
+  NewCops: enable
+  TargetRubyVersion: 3.2
+  Exclude:
+    - 'vendor/**/*'
+    - 'gemfiles/**/*'
+
+# Style - Documentation not required for small gems
+Style/Documentation:
+  Enabled: false
+
+# Style - Optional boolean parameters are acceptable in this API
+Style/OptionalBooleanParameter:
+  Enabled: false
+
+# Metrics - Allow longer blocks in specs
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*_spec.rb'
+    - '**/*.gemspec'
+
+# Lint - Allow constant definition in RSpec blocks
+Lint/ConstantDefinitionInBlock:
+  Exclude:
+    - 'spec/**/*_spec.rb'
+
+# Gemspec - Ruby version is intentionally broad for compatibility
+Gemspec/RequiredRubyVersion:
+  Enabled: false
+
+# Gemspec - Development dependencies in gemspec is acceptable for gems
+Gemspec/DevelopmentDependencies:
+  Enabled: false
