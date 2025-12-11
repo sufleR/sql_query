@@ -5,6 +5,7 @@ SimpleCov.start do
   add_filter '/spec/'
 end
 
+require 'logger'
 require 'active_record'
 require 'sql_query'
 # require 'pry'
