@@ -9,8 +9,8 @@ end
 if RUBY_VERSION >= '2.6' && RUBY_VERSION < '3.0'
   require 'bigdecimal'
   unless BigDecimal.respond_to?(:new)
-    def BigDecimal.new(*args, **kwargs)
-      BigDecimal(*args, **kwargs)
+    def BigDecimal.new(*, **)
+      BigDecimal(*, **)
     end
   end
 end
