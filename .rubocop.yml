@@ -16,13 +16,13 @@ Style/OptionalBooleanParameter:
 # Metrics - Allow longer blocks in specs
 Metrics/BlockLength:
   Exclude:
-    - 'spec/**/*_spec.rb'
+    - 'spec/**/*.rb'
     - '**/*.gemspec'
 
 # Lint - Allow constant definition in RSpec blocks
 Lint/ConstantDefinitionInBlock:
   Exclude:
-    - 'spec/**/*_spec.rb'
+    - 'spec/**/*.rb'
 
 # Gemspec - Ruby version is intentionally broad for compatibility
 Gemspec/RequiredRubyVersion:

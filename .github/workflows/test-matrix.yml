@@ -64,22 +64,20 @@ jobs:
 
       - name: Install dependencies with specific Rails version
         run: |
-          gem install bundler
-          bundle config set --local path vendor/bundle
           if [ "${{ matrix.rails }}" = "5.2" ]; then
-            bundle install --gemfile=gemfiles/5.2.gemfile
+            bundle install --gemfile=gemfiles/5.2.gemfile --jobs=4 --retry=3
           elif [ "${{ matrix.rails }}" = "6.0" ]; then
-            bundle install --gemfile=gemfiles/6.0.gemfile
+            bundle install --gemfile=gemfiles/6.0.gemfile --jobs=4 --retry=3
           elif [ "${{ matrix.rails }}" = "6.1" ]; then
-            bundle install --gemfile=gemfiles/6.1.gemfile
+            bundle install --gemfile=gemfiles/6.1.gemfile --jobs=4 --retry=3
           elif [ "${{ matrix.rails }}" = "7.0" ]; then
-            bundle install --gemfile=gemfiles/7.0.gemfile
+            bundle install --gemfile=gemfiles/7.0.gemfile --jobs=4 --retry=3
           elif [ "${{ matrix.rails }}" = "7.1" ]; then
-            bundle install --gemfile=gemfiles/7.1.gemfile
+            bundle install --gemfile=gemfiles/7.1.gemfile --jobs=4 --retry=3
           elif [ "${{ matrix.rails }}" = "8.0" ]; then
-            bundle install --gemfile=gemfiles/8.0.gemfile
+            bundle install --gemfile=gemfiles/8.0.gemfile --jobs=4 --retry=3
           else
-            bundle install
+            bundle install --jobs=4 --retry=3
           fi
 
       - name: Run tests
