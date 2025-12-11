@@ -16,6 +16,10 @@ Gem::Specification.new do |spec|
   spec.homepage      = 'https://github.com/sufleR/sql_query'
   spec.license       = 'MIT'
 
+  spec.metadata = {
+    'rubygems_mfa_required' => 'true'
+  }
+
   spec.files         = `git ls-files -z`.split("\x0")
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
@@ -30,7 +34,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rspec', '~> 3.12'
   spec.add_development_dependency 'rubocop', '~> 1.60'
   spec.add_development_dependency 'simplecov'
-  spec.add_development_dependency 'with_model', '~> 2.2'
-
-  spec.metadata['rubygems_mfa_required'] = 'true'
+  spec.add_development_dependency 'with_model'
 end

@@ -3,5 +3,6 @@
 source "https://rubygems.org"
 
 gem "activerecord", "~> 8.0.0"
+gem "with_model", "~> 2.2.0"
 
 gemspec path: "../"
