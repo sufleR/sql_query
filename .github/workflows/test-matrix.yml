@@ -15,14 +15,16 @@ jobs:
       fail-fast: false
       matrix:
         ruby: ['2.7', '3.2']
-        rails: ['5.2', '6.0', '6.1', '7.0', '7.1', '8.0']
+        rails: ['4.2', '5.2', '6.0', '6.1', '7.0', '7.1', '8.0']
         exclude:
-          # Ruby 2.7 officially supports Rails 5.2-7.0 only
+          # Ruby 2.7 officially supports Rails 4.2-7.0
           - ruby: '2.7'
             rails: '7.1'
           - ruby: '2.7'
             rails: '8.0'
           # Ruby 3.2 requires Rails 7.0+
+          - ruby: '3.2'
+            rails: '4.2'
           - ruby: '3.2'
             rails: '5.2'
           - ruby: '3.2'
@@ -64,7 +66,9 @@ jobs:
 
       - name: Install dependencies with specific Rails version
         run: |
-          if [ "${{ matrix.rails }}" = "5.2" ]; then
+          if [ "${{ matrix.rails }}" = "4.2" ]; then
+            bundle install --gemfile=gemfiles/4.2.gemfile --jobs=4 --retry=3
+          elif [ "${{ matrix.rails }}" = "5.2" ]; then
             bundle install --gemfile=gemfiles/5.2.gemfile --jobs=4 --retry=3
           elif [ "${{ matrix.rails }}" = "6.0" ]; then
             bundle install --gemfile=gemfiles/6.0.gemfile --jobs=4 --retry=3
@@ -82,7 +86,9 @@ jobs:
 
       - name: Run tests
         run: |
-          if [ "${{ matrix.rails }}" = "5.2" ]; then
+          if [ "${{ matrix.rails }}" = "4.2" ]; then
+            bundle exec --gemfile=gemfiles/4.2.gemfile rspec
+          elif [ "${{ matrix.rails }}" = "5.2" ]; then
             bundle exec --gemfile=gemfiles/5.2.gemfile rspec
           elif [ "${{ matrix.rails }}" = "6.0" ]; then
             bundle exec --gemfile=gemfiles/6.0.gemfile rspec
