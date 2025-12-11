@@ -5,6 +5,16 @@ SimpleCov.start do
   add_filter '/spec/'
 end
 
+# Fix BigDecimal.new deprecation for Ruby 2.6-2.7 with Rails < 5.0
+if RUBY_VERSION >= '2.6' && RUBY_VERSION < '3.0'
+  require 'bigdecimal'
+  unless BigDecimal.respond_to?(:new)
+    def BigDecimal.new(*args, **kwargs)
+      BigDecimal(*args, **kwargs)
+    end
+  end
+end
+
 require 'logger'
 require 'active_record'
 require 'sql_query'
