@@ -31,4 +31,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rubocop', '~> 1.60'
   spec.add_development_dependency 'simplecov'
   spec.add_development_dependency 'with_model', '~> 2.2'
+
+  spec.metadata['rubygems_mfa_required'] = 'true'
 end

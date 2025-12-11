@@ -42,9 +42,6 @@ jobs:
           ruby-version: '3.2'
           bundler-cache: true
 
-      - name: Setup database
-        run: psql -h localhost -U postgres -c 'CREATE DATABASE sqlquery_test;'
-
       - name: Run tests
         run: bundle exec rspec
 
