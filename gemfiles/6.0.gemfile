@@ -2,8 +2,8 @@
 
 source "https://rubygems.org"
 
-gem "activerecord", "~> 4.2.0"
-gem "with_model", "~> 2.0.0"
-gem "pg", "~> 0.21"
+gem "activerecord", "~> 6.0.0"
+gem "with_model", "~> 2.1.6"
+gem "pg", "~> 1.1"
 
 gemspec path: "../"

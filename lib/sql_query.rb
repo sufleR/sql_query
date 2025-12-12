@@ -46,7 +46,7 @@ class SqlQuery
   end
 
   def prepared_for_logs
-    @sql_for_logs ||= prepare_query(true)
+    @prepared_for_logs ||= prepare_query(true)
   end
 
   def partial(partial_name, partial_options = {})
@@ -56,6 +56,7 @@ class SqlQuery
   end
 
   attr_writer :config
+
   def self.config
     @config ||= Config.new
   end

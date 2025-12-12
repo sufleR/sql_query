@@ -5,9 +5,20 @@ SimpleCov.start do
   add_filter '/spec/'
 end
 
+# Fix BigDecimal.new deprecation for Ruby 2.6-2.7 with Rails < 5.0
+if RUBY_VERSION >= '2.6' && RUBY_VERSION < '3.0'
+  require 'bigdecimal'
+  unless BigDecimal.respond_to?(:new)
+    def BigDecimal.new(...)
+      BigDecimal(...)
+    end
+  end
+end
+
+require 'logger'
 require 'active_record'
 require 'sql_query'
-#require 'pry'
+# require 'pry'
 
 SqlQuery.configure do |config|
   config.path = '/spec/sql_queries'
@@ -22,13 +33,25 @@ RSpec.configure do |config|
     mocks.verify_partial_doubles = true
   end
 
-  connection = if ENV['BUILDER'] == 'travis'
-                 'postgres://postgres@localhost/travis_ci_test'
-               else
-                 'postgres://sqlquery:sqlquery@localhost/sqlquery'
-               end
+  connection_config = if ENV['CI']
+                        {
+                          adapter: 'postgresql',
+                          host: 'localhost',
+                          username: 'postgres',
+                          password: 'postgres',
+                          database: 'sqlquery_test'
+                        }
+                      else
+                        {
+                          adapter: 'postgresql',
+                          host: 'localhost',
+                          username: 'sqlquery',
+                          password: 'sqlquery',
+                          database: 'sqlquery'
+                        }
+                      end
 
-  ActiveRecord::Base.establish_connection(connection)
+  ActiveRecord::Base.establish_connection(connection_config)
 
   ActiveRecord::Base.connection.execute(
     'CREATE TABLE IF NOT EXISTS players (email text);'

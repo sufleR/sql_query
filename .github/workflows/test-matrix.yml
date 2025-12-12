@@ -1,0 +1,122 @@
+name: Test Matrix
+
+on:
+  push:
+    branches: [ master, main ]
+  pull_request:
+    branches: [ master, main ]
+
+jobs:
+  test:
+    name: Ruby ${{ matrix.ruby }} / Rails ${{ matrix.rails }}
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        ruby: ['2.7', '3.2']
+        rails: ['4.2', '5.2', '6.0', '6.1', '7.0', '7.1', '8.0']
+        exclude:
+          # Ruby 2.7 officially supports Rails 4.2-7.0
+          - ruby: '2.7'
+            rails: '7.1'
+          - ruby: '2.7'
+            rails: '8.0'
+          # Ruby 3.2 requires Rails 7.0+
+          - ruby: '3.2'
+            rails: '4.2'
+          - ruby: '3.2'
+            rails: '5.2'
+          - ruby: '3.2'
+            rails: '6.0'
+          - ruby: '3.2'
+            rails: '6.1'
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: sqlquery_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      CI: true
+      PGHOST: localhost
+      PGUSER: postgres
+      PGPASSWORD: postgres
+      RAILS_VERSION: ${{ matrix.rails }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+          bundler-cache: false
+
+      - name: Install dependencies with specific Rails version
+        run: |
+          if [ "${{ matrix.rails }}" = "4.2" ]; then
+            bundle install --gemfile=gemfiles/4.2.gemfile --jobs=4 --retry=3
+          elif [ "${{ matrix.rails }}" = "5.2" ]; then
+            bundle install --gemfile=gemfiles/5.2.gemfile --jobs=4 --retry=3
+          elif [ "${{ matrix.rails }}" = "6.0" ]; then
+            bundle install --gemfile=gemfiles/6.0.gemfile --jobs=4 --retry=3
+          elif [ "${{ matrix.rails }}" = "6.1" ]; then
+            bundle install --gemfile=gemfiles/6.1.gemfile --jobs=4 --retry=3
+          elif [ "${{ matrix.rails }}" = "7.0" ]; then
+            bundle install --gemfile=gemfiles/7.0.gemfile --jobs=4 --retry=3
+          elif [ "${{ matrix.rails }}" = "7.1" ]; then
+            bundle install --gemfile=gemfiles/7.1.gemfile --jobs=4 --retry=3
+          elif [ "${{ matrix.rails }}" = "8.0" ]; then
+            bundle install --gemfile=gemfiles/8.0.gemfile --jobs=4 --retry=3
+          else
+            bundle install --jobs=4 --retry=3
+          fi
+
+      - name: Run tests
+        run: |
+          if [ "${{ matrix.rails }}" = "4.2" ]; then
+            bundle exec --gemfile=gemfiles/4.2.gemfile rspec
+          elif [ "${{ matrix.rails }}" = "5.2" ]; then
+            bundle exec --gemfile=gemfiles/5.2.gemfile rspec
+          elif [ "${{ matrix.rails }}" = "6.0" ]; then
+            bundle exec --gemfile=gemfiles/6.0.gemfile rspec
+          elif [ "${{ matrix.rails }}" = "6.1" ]; then
+            bundle exec --gemfile=gemfiles/6.1.gemfile rspec
+          elif [ "${{ matrix.rails }}" = "7.0" ]; then
+            bundle exec --gemfile=gemfiles/7.0.gemfile rspec
+          elif [ "${{ matrix.rails }}" = "7.1" ]; then
+            bundle exec --gemfile=gemfiles/7.1.gemfile rspec
+          elif [ "${{ matrix.rails }}" = "8.0" ]; then
+            bundle exec --gemfile=gemfiles/8.0.gemfile rspec
+          else
+            bundle exec rspec
+          fi
+
+  lint:
+    name: RuboCop
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2'
+          bundler-cache: true
+
+      - name: Run RuboCop
+        run: bundle exec rubocop --format progress
