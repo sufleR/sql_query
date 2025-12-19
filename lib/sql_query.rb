@@ -86,7 +86,7 @@ class SqlQuery
     # Matches: 'single-quoted' OR "double-quoted" OR (whitespace)
     # Only captures whitespace when NOT inside quotes
     rendered_sql.gsub(/'(?:[^'\\]|\\.)*'|"(?:[^"\\]|\\.)*"|(\s+)/) do |match|
-      $1 ? ' ' : match  # Replace whitespace with space, preserve quoted strings
+      ::Regexp.last_match(1) ? ' ' : match # Replace whitespace with space, preserve quoted strings
     end
   end
 
