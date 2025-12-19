@@ -33,23 +33,13 @@ RSpec.configure do |config|
     mocks.verify_partial_doubles = true
   end
 
-  connection_config = if ENV['CI']
-                        {
-                          adapter: 'postgresql',
-                          host: 'localhost',
-                          username: 'postgres',
-                          password: 'postgres',
-                          database: 'sqlquery_test'
-                        }
-                      else
-                        {
-                          adapter: 'postgresql',
-                          host: 'localhost',
-                          username: 'sqlquery',
-                          password: 'sqlquery',
-                          database: 'sqlquery'
-                        }
-                      end
+  connection_config = {
+    adapter: 'postgresql',
+    host: 'localhost',
+    username: 'postgres',
+    password: 'postgres',
+    database: 'sqlquery_test'
+  }
 
   ActiveRecord::Base.establish_connection(connection_config)
 

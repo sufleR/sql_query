@@ -78,8 +78,16 @@ class SqlQuery
 
   def prepare_query(for_logs)
     query_template = File.read(file_path)
-    query_template = query_template.gsub(/(\n|\s)+/, ' ') if for_logs
-    ERB.new(query_template).result(binding)
+    rendered_sql = ERB.new(query_template).result(binding)
+
+    return rendered_sql unless for_logs
+
+    # Normalize whitespace while preserving SQL quoted strings
+    # Matches: 'single-quoted' OR "double-quoted" OR (whitespace)
+    # Only captures whitespace when NOT inside quotes
+    rendered_sql.gsub(/'(?:[^'\\]|\\.)*'|"(?:[^"\\]|\\.)*"|(\s+)/) do |match|
+      $1 ? ' ' : match  # Replace whitespace with space, preserve quoted strings
+    end
   end
 
   def split_to_path_and_name(file)

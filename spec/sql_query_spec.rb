@@ -211,6 +211,22 @@ describe SqlQuery do
           .to eq("SELECT * FROM players WHERE email = '   e@mail.dev   ' ")
       end
     end
+
+    context 'when template has multiline ERB blocks' do
+      let(:file_name) { :multiline_erb }
+      let(:options) { { email: 'test@dev.com', field1: 'val1', field2: 'val2' } }
+      let(:query) { described_class.new(file_name, options) }
+
+      it 'processes multiline ERB correctly without syntax errors' do
+        expect { query.prepared_for_logs }.not_to raise_error
+      end
+
+      it 'includes rendered values in prepared_for_logs output' do
+        result = query.prepared_for_logs
+        expect(result).to include("'val1' as field1")
+        expect(result).to include("'val2' as field2")
+      end
+    end
   end
 
   describe '.config' do
