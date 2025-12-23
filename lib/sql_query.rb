@@ -1,11 +1,9 @@
 # frozen_string_literal: true
 
 require 'erb'
-
 require_relative 'sql_query/config'
 require_relative 'sql_query/comment_remover'
 require_relative 'sql_query/whitespace_normalizer'
-
 
 class SqlQuery
   attr_reader :connection
