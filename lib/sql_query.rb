@@ -1,7 +1,10 @@
 # frozen_string_literal: true
 
 require 'erb'
+require_relative 'sql_query/config'
+require_relative 'sql_query/comment_remover'
 
+# rubocop:disable Metrics/ClassLength
 class SqlQuery
   attr_reader :connection
 
@@ -34,7 +37,10 @@ class SqlQuery
   end
 
   def sql
-    @sql ||= prepare_query(false)
+    @sql ||= begin
+      rendered_sql = prepare_query(false)
+      apply_comment_removal(rendered_sql, for_logs: false)
+    end
   end
 
   def pretty_sql
@@ -46,7 +52,10 @@ class SqlQuery
   end
 
   def prepared_for_logs
-    @prepared_for_logs ||= prepare_query(true)
+    @prepared_for_logs ||= begin
+      rendered_sql = prepare_query(true)
+      apply_comment_removal(rendered_sql, for_logs: true)
+    end
   end
 
   def partial(partial_name, partial_options = {})
@@ -65,15 +74,6 @@ class SqlQuery
     yield(config)
   end
 
-  class Config
-    attr_accessor :path, :adapter
-
-    def initialize
-      @path = '/app/sql_queries'
-      @adapter = ActiveRecord::Base
-    end
-  end
-
   private
 
   def prepare_query(for_logs)
@@ -89,6 +89,13 @@ class SqlQuery
       parts = file.rpartition('/')
       [parts.first, parts.last]
     end
+  end
+
+  def apply_comment_removal(sql, for_logs:)
+    config = self.class.config
+    return sql unless config.should_comments_be_removed?(for_logs: for_logs)
+
+    CommentRemover.new(config.remove_comments).remove(sql)
   end
 
   def pretty(value)
@@ -131,3 +138,4 @@ class SqlQuery
     tmp_path
   end
 end
+# rubocop:enable Metrics/ClassLength
