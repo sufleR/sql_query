@@ -2,7 +2,7 @@
 
 ## 0.7.5 / Unreleased
 
-* [Added]
+* [Added] Configurable SQL comment removal feature with `remove_comments` and `remove_comments_from` configuration options. Supports selective removal of single-line (`--`) and multi-line (`/* */`) comments while preserving comments within quoted strings (single, double, and PostgreSQL dollar quotes). Addresses https://github.com/sufleR/sql_query/issues/20
 
 * [Deprecated]
 

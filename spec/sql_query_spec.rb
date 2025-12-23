@@ -213,9 +213,144 @@ describe SqlQuery do
     end
   end
 
+  describe 'comment removal integration' do
+    after do
+      # Reset configuration to defaults
+      SqlQuery.configure do |config|
+        config.remove_comments = :all
+        config.remove_comments_from = :all
+      end
+    end
+
+    context 'with remove_comments_from: :all' do
+      before do
+        SqlQuery.configure do |config|
+          config.remove_comments = :all
+          config.remove_comments_from = :all
+        end
+      end
+
+      it 'removes comments from sql() method' do
+        query = described_class.new(:with_single_line_comments, email: 'test@example.com')
+        result = query.sql
+        expect(result).not_to include('--')
+        expect(result).to include('SELECT * FROM players')
+      end
+
+      it 'removes comments from prepared_for_logs() method' do
+        query = described_class.new(:with_multiline_comments, email: 'test@example.com')
+        result = query.prepared_for_logs
+        expect(result).not_to include('/*')
+        expect(result).not_to include('*/')
+      end
+    end
+
+    context 'with remove_comments_from: :prepared_for_logs' do
+      before do
+        SqlQuery.configure do |config|
+          config.remove_comments = :all
+          config.remove_comments_from = :prepared_for_logs
+        end
+      end
+
+      it 'keeps comments in sql() method' do
+        query = described_class.new(:with_single_line_comments, email: 'test@example.com')
+        result = query.sql
+        expect(result).to include('--')
+      end
+
+      it 'removes comments from prepared_for_logs() method' do
+        query = described_class.new(:with_single_line_comments, email: 'test@example.com')
+        result = query.prepared_for_logs
+        expect(result).not_to include('--')
+      end
+    end
+
+    context 'with remove_comments_from: :none' do
+      before do
+        SqlQuery.configure do |config|
+          config.remove_comments = :all
+          config.remove_comments_from = :none
+        end
+      end
+
+      it 'keeps comments in sql() method' do
+        query = described_class.new(:with_mixed_comments, email: 'test@example.com')
+        result = query.sql
+        expect(result).to include('--')
+        expect(result).to include('/*')
+      end
+
+      it 'keeps comments in prepared_for_logs() method' do
+        query = described_class.new(:with_mixed_comments, email: 'test@example.com')
+        result = query.prepared_for_logs
+        expect(result).to include('--')
+        expect(result).to include('/*')
+      end
+    end
+
+    context 'with remove_comments: :oneline' do
+      before do
+        SqlQuery.configure do |config|
+          config.remove_comments = :oneline
+          config.remove_comments_from = :all
+        end
+      end
+
+      it 'removes only single-line comments' do
+        query = described_class.new(:with_mixed_comments, email: 'test@example.com')
+        result = query.sql
+        expect(result).not_to include('--')
+        expect(result).to include('/*')
+      end
+    end
+
+    context 'with remove_comments: :multiline' do
+      before do
+        SqlQuery.configure do |config|
+          config.remove_comments = :multiline
+          config.remove_comments_from = :all
+        end
+      end
+
+      it 'removes only multi-line comments' do
+        query = described_class.new(:with_mixed_comments, email: 'test@example.com')
+        result = query.sql
+        expect(result).to include('--')
+        expect(result).not_to include('/*')
+        expect(result).not_to include('*/')
+      end
+    end
+
+    context 'preserving comments in quoted strings' do
+      before do
+        SqlQuery.configure do |config|
+          config.remove_comments = :all
+          config.remove_comments_from = :all
+        end
+      end
+
+      it 'preserves comment syntax in string literals' do
+        query = described_class.new(:with_comments_in_strings, email: 'test@example.com')
+        result = query.sql
+        expect(result).to include("'-- not a comment'")
+        expect(result).to include("'/* also not a comment */'")
+        expect(result).to include('"column--name"')
+      end
+    end
+  end
+
   describe '.config' do
     it 'returns configuration instance' do
       expect(described_class.config).to be_kind_of(SqlQuery::Config)
+    end
+
+    it 'has default remove_comments setting' do
+      expect(described_class.config.remove_comments).to eq(:all)
+    end
+
+    it 'has default remove_comments_from setting' do
+      expect(described_class.config.remove_comments_from).to eq(:all)
     end
   end
 end
