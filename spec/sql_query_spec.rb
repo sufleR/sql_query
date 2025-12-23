@@ -211,6 +211,23 @@ describe SqlQuery do
           .to eq("SELECT * FROM players WHERE email = '   e@mail.dev   ' ")
       end
     end
+
+    context 'when template has multiline ERB blocks' do
+      let(:file_name) { :multiline_erb }
+      let(:options) { { email: 'test@dev.com', field1: 'val1', field2: 'val2' } }
+      let(:query) { described_class.new(file_name, options) }
+
+      it 'processes multiline ERB correctly without syntax errors' do
+        expect { query.prepared_for_logs }.not_to raise_error
+      end
+
+      it 'collapses SQL whitespace while preserving ERB processing' do
+        result = query.prepared_for_logs
+        expect(result).to include("'val1' as field1")
+        expect(result).to include("'val2' as field2")
+        expect(result).not_to include("\n") # All newlines should be collapsed
+      end
+    end
   end
 
   describe 'comment removal integration' do

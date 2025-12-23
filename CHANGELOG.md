@@ -1,6 +1,6 @@
 # SqlQuery change log
 
-## 0.7.5 / Unreleased
+## 1.0.0 / Unreleased
 
 * [Added] Configurable SQL comment removal feature with `remove_comments` and `remove_comments_from` configuration options. Supports selective removal of single-line (`--`) and multi-line (`/* */`) comments while preserving comments within quoted strings (single, double, and PostgreSQL dollar quotes). Addresses https://github.com/sufleR/sql_query/issues/20
 
@@ -8,7 +8,7 @@
 
 * [Removed]
 
-* [Fixed]
+* [Fixed] Whitespace normalization now properly supports multiline ERB blocks. Previously, `prepared_for_logs` would corrupt SQL templates containing multiline ERB code blocks (e.g., `<% ... %>`) by normalizing whitespace before ERB processing. The new `WhitespaceNormalizer` class renders ERB first, then intelligently collapses whitespace while preserving content within SQL quoted strings (single quotes, double quotes, and escaped quotes).
 
 ## 0.7.4 / 2024-04-20
 

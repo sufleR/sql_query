@@ -1,0 +1,9 @@
+<%
+  field1 = @field1 || 'default1'
+  field2 = @field2 || 'default2'
+%>
+SELECT
+  <%= quote field1 %> as field1,
+  <%= quote field2 %> as field2
+FROM players
+WHERE email = <%= quote @email %>

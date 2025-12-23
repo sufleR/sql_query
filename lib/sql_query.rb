@@ -3,6 +3,7 @@
 require 'erb'
 require_relative 'sql_query/config'
 require_relative 'sql_query/comment_remover'
+require_relative 'sql_query/whitespace_normalizer'
 
 class SqlQuery
   attr_reader :connection
@@ -71,8 +72,12 @@ class SqlQuery
 
   def prepare_query(for_logs)
     query_template = File.read(file_path)
-    query_template = query_template.gsub(/(\n|\s)+/, ' ') if for_logs
-    ERB.new(query_template).result(binding)
+    rendered_sql = ERB.new(query_template).result(binding)
+
+    return rendered_sql unless for_logs
+
+    # Normalize whitespace while preserving quoted strings
+    WhitespaceNormalizer.new.normalize(rendered_sql)
   end
 
   def split_to_path_and_name(file)
