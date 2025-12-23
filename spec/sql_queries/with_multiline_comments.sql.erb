@@ -1,0 +1,5 @@
+/* This query selects all players
+   filtered by email address */
+SELECT * FROM players
+WHERE email = <%= quote @email %>
+/* End of query */

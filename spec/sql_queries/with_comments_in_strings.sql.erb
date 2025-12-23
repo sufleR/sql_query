@@ -1,0 +1,6 @@
+SELECT
+  '-- not a comment' as text1,
+  '/* also not a comment */' as text2,
+  "column--name" as text3
+FROM players
+WHERE email = <%= quote @email %>

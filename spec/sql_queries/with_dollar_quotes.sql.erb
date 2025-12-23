@@ -1,0 +1,5 @@
+SELECT
+  $$text with -- comment$$ as text1,
+  $tag$text with /* comment */$tag$ as text2
+FROM players
+WHERE email = <%= quote @email %>

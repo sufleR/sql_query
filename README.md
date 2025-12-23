@@ -99,6 +99,8 @@ SqlQuery.new('player/get_by_email', email: 'e@mail.dev')
 SqlQuery.configure do |config|
   config.path = '/app/sql_templates'
   config.adapter = ActiveRecord::Base
+  config.remove_comments = :all              # :none, :oneline, :multiline, :all (default: :all)
+  config.remove_comments_from = :all         # :none, :prepared_for_logs, :all (default: :all)
 end
 ```
 
@@ -106,6 +108,19 @@ end
 * path - If you don't like default path to your queries you can change it here.
 
 * adapter - class which implements connection method.
+
+* remove_comments - Controls which types of SQL comments to remove:
+  * `:none` - Don't remove any comments
+  * `:oneline` - Remove only single-line comments (`--`)
+  * `:multiline` - Remove only multi-line comments (`/* */`)
+  * `:all` - Remove both types (default)
+
+* remove_comments_from - Controls where to apply comment removal:
+  * `:none` - Don't remove comments anywhere
+  * `:prepared_for_logs` - Remove comments only in `prepared_for_logs` method
+  * `:all` - Remove comments from all queries (default)
+
+**Note:** Comments within quoted strings (single quotes, double quotes, or PostgreSQL dollar quotes) are always preserved regardless of settings.
 
 ### Partials
 
