@@ -85,10 +85,7 @@ class SqlQuery
   end
 
   def apply_comment_removal(sql, for_logs:)
-    config = self.class.config
-    return sql unless config.should_comments_be_removed?(for_logs: for_logs)
-
-    CommentRemover.new(config.remove_comments).remove(sql)
+    CommentRemover.new(self.class.config).remove(sql, for_logs: for_logs)
   end
 
   def pretty(value)

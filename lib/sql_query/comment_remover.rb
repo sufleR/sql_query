@@ -14,23 +14,26 @@ class SqlQuery
   # - Dollar-quoted strings (PostgreSQL): $$...$$ or $tag$...$tag$
   #
   # @example
-  #   remover = CommentRemover.new(:all)
+  #   config = SqlQuery.config
+  #   remover = CommentRemover.new(config)
   #   sql = "SELECT * FROM t -- comment\nWHERE id = 1"
-  #   remover.remove(sql)
+  #   remover.remove(sql, for_logs: true)
   #   # => "SELECT * FROM t \nWHERE id = 1"
   #
   # rubocop:disable Metrics/ClassLength
   class CommentRemover
-    def initialize(strategy)
-      @strategy = strategy # :none, :oneline, :multiline, :all
+    def initialize(config)
+      @config = config
     end
 
-    # Removes comments from SQL based on the configured strategy
+    # Removes comments from SQL based on the configuration
     #
     # @param sql [String] the SQL string to process
-    # @return [String] SQL with comments removed (or unchanged if strategy is :none)
-    def remove(sql)
-      return sql if @strategy == :none
+    # @param for_logs [Boolean] whether the query is being prepared for logs
+    # @return [String] SQL with comments removed (or unchanged based on config)
+    def remove(sql, for_logs:)
+      return sql unless @config.should_comments_be_removed?(for_logs: for_logs)
+      return sql if @config.remove_comments == :none
 
       state = init_state
       result = []
@@ -168,11 +171,11 @@ class SqlQuery
     end
 
     def should_remove_oneline?
-      @strategy == :oneline || @strategy == :all
+      %i[oneline all].include?(@config.remove_comments)
     end
 
     def should_remove_multiline?
-      @strategy == :multiline || @strategy == :all
+      %i[multiline all].include?(@config.remove_comments)
     end
 
     # Extracts dollar quote tag from position
