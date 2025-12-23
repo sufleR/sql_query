@@ -4,7 +4,6 @@ require 'erb'
 require_relative 'sql_query/config'
 require_relative 'sql_query/comment_remover'
 
-# rubocop:disable Metrics/ClassLength
 class SqlQuery
   attr_reader :connection
 
@@ -37,10 +36,7 @@ class SqlQuery
   end
 
   def sql
-    @sql ||= begin
-      rendered_sql = prepare_query(false)
-      apply_comment_removal(rendered_sql, for_logs: false)
-    end
+    @sql ||= apply_comment_removal(prepare_query(false), for_logs: false)
   end
 
   def pretty_sql
@@ -52,10 +48,7 @@ class SqlQuery
   end
 
   def prepared_for_logs
-    @prepared_for_logs ||= begin
-      rendered_sql = prepare_query(true)
-      apply_comment_removal(rendered_sql, for_logs: true)
-    end
+    @prepared_for_logs ||= apply_comment_removal(prepare_query(true), for_logs: true)
   end
 
   def partial(partial_name, partial_options = {})
@@ -138,4 +131,3 @@ class SqlQuery
     tmp_path
   end
 end
-# rubocop:enable Metrics/ClassLength
